@@ -2,6 +2,7 @@ const WINDOW_MS = 10 * 60 * 1000
 const MAX_REQUESTS = 3
 
 const attemptsBySession = new Map<string, number[]>()
+let nextCleanupAt = 0
 
 export interface FeedbackRateLimitResult {
   allowed: boolean
@@ -13,6 +14,12 @@ export function consumeFeedbackRateLimit(
   now = Date.now(),
 ): FeedbackRateLimitResult {
   const cutoff = now - WINDOW_MS
+  if (now >= nextCleanupAt) {
+    for (const [key, timestamps] of attemptsBySession) {
+      if (!timestamps.length || timestamps[timestamps.length - 1] <= cutoff) attemptsBySession.delete(key)
+    }
+    nextCleanupAt = now + WINDOW_MS
+  }
   const attempts = (attemptsBySession.get(sessionId) ?? []).filter(
     timestamp => timestamp > cutoff,
   )
@@ -33,4 +40,5 @@ export function consumeFeedbackRateLimit(
 
 export function resetFeedbackRateLimitForTests() {
   attemptsBySession.clear()
+  nextCleanupAt = 0
 }
