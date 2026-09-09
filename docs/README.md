@@ -16,3 +16,5 @@
 이 저장소의 기존 문서 인덱스와 생성 규칙이 있으면 그 규칙을 우선하며, 기존 파일을 덮어쓰지 않습니다.
 
 - 2026-09-09 성능·안정성: [분석](runtime-resilience-20260909-analysis.md), [설계](runtime-resilience-20260909-design.md), [작업](runtime-resilience-20260909-tasks.md)
+
+- PR CI 수정: [분석](pr-ci-repair-analysis.md), [설계](pr-ci-repair-design.md), [결과](pr-ci-repair-tasks.md)
